@@ -1,4 +1,3 @@
-// g++ get_face.cpp $(pkg-config --libs opencv --cflags) -o GetFace
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
@@ -10,6 +9,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <fstream>
+#include <unistd.h>
 
 #define data_dir "/home/jojo/face-detection/data/"
 #define cascade_file "/home/jojo/face-detection/opencv_model/lbpcascade_frontalface_improved.xml"
@@ -100,21 +100,45 @@ int create_pic_lists(string photo_root_path,int train_num,int num_max)
 string face_input()
 {
 	string name,path;
+	string s;
 	cout<<"Please Input your name:"<<"(Insert Enter to confirm)"<<endl;
 	cin >> name;
 	path = data_dir + name;
-	int isCreate = mkdir(path.c_str(),S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRWXO);
-	if (!isCreate)
+
+	if(access(path.c_str(),F_OK) == 0)// -1 not exsist ; 0 exsist
 	{
-		cout<<"create path:"<<path<<endl;
-		return (path + "/");
-	}	
+		cout <<"You have registered"<<endl;
+		cout <<"Do you want to resampled?"<<endl;
+		cout <<"Please insert y or n"<<endl;
+		cin >> s;
+		if (s[0] == 'y')
+		{
+			cout << "Your first insert is y"<<endl;
+			cout << path + "/"<<endl;
+			return (path + "/");
+		}
+		else if(s[0] == 'n')
+		{
+			cout << "Your first insert is n"<<endl;
+			return "STOP";
+		}	
+		else return "STOP";
+	}
 	else
 	{
-		cout<<"create path failed"<<"The folder may be exsited"<<endl;
-		return NULL;
-	} 
+		int isCreate = mkdir(path.c_str(),S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRWXO);
+		if (!isCreate)
+		{
+			cout<<"create path:"<<path<<endl;
+			return (path + "/");
+		}	
+		else
+		{
+			cout<<"create path failed"<<"The folder may be exsited"<<endl;
+			return NULL;
+		} 
 		
+	}
 }
 /*
 	This function gets your face photo to be store to user dir
@@ -151,11 +175,17 @@ int face_pic_get(string CascadeFile, int CamID, string PICStoreRoot, bool StoreI
 	vector<Rect> face;//face region x,y,w,h
 	while(cap.isOpened() && (num < PICNums))
 	{	
-		while(start < 100)
+		//drop the first 10 images
+		while(start < 10)
+		{
+			cap >> frame;
+			if(frame.empty())
+				continue;
 			start ++;
+		}
 		cap >> frame;
 		if(frame.empty())
-			break;
+			continue;
 		cvtColor(frame,grey,CV_BGR2GRAY);
 		cascade.detectMultiScale(grey,face,1.15,3,0,Size(32,32),Size(320,320));
 		if(face.size() > 0)
@@ -183,6 +213,7 @@ int face_pic_get(string CascadeFile, int CamID, string PICStoreRoot, bool StoreI
 		int c = waitKey(10);
 		if((char)c == 'q')
 		{
+			cap.release();
 			printf("Stopped by user\n");
 			return 0;
 		}
@@ -194,7 +225,12 @@ int face_pic_get(string CascadeFile, int CamID, string PICStoreRoot, bool StoreI
 }
 int main(void)
 {
+	int status;
 	string store_root = face_input();
-	face_pic_get(cascade_file,0,store_root,0,100);
+	if(store_root == "STOP")
+		return 0;	
+	status = face_pic_get(cascade_file,0,store_root,0,100);
+	if (status == 0)
+		return 0;
 	create_pic_lists(data_dir,75,NUM_MAX);
 }
