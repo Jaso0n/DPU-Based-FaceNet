@@ -1,5 +1,15 @@
 # DPU-Based-FaceNet
 ## 0.Tool Chain and Environment
+* Zing2:
+            CPU: ARM CortexA9
+            
+            RAM: 512MB
+            
+            FPGA: Xilinx Kintex 7series
+            
+            DPU: B2305(200MHz, 100MHz)
+            
+            SD: 16GB
 
 * ZedBoard：
 
@@ -23,7 +33,10 @@
            
            DNNDK3.1(DECENT DNNC DLET)
 
-* Design Flow: OpenCV --->(Face.jpg) ---> Caffe --->(train_val.prototxt, train.txt, .caffemodel) ---> DNNDK --->(deploy.caffemodel, dpu_MyFaceNet_0.elf) ---> ZedBoard 
+* Design Flow: 
+1.OpenCV --->(Face.jpg) ---> Caffe --->(train_val.prototxt, train.txt, .caffemodel) ---> DNNDK --->(deploy.caffemodel, dpu_MyFaceNet_0.elf) ---> ZedBoard
+2.OpenCV --->(Face.jpg) ---> Caffe --->(train_val.prototxt, train.txt, .caffemodel) ---> DNNDK --->(deploy.caffemodel, dpu_Zing2FaceNet_0.elf) ---> Zing2
+
 ## 1.Create your Net
   通过修改*src/cnn_model.py*文件中的函数，可以定义和训练出自己的网络结构（详见Caffe API 整理）
 
@@ -36,4 +49,6 @@
 ## 4.Improvement
   目前实现的是对人脸图片的识别，后面会使用摄像头实时采样，然后完成人脸检测和人脸识别，并通过网口发送图片至PC机。
   
-  开发板为第三方开发板Zing2（目前缺少正确版本DPU的驱动，导致DPU相关底层移植不成功），因此采用ZedBoard做技术路线的原理验证。
+  已成功将DPU移植至ZING2,工作频率为200MHz + 400MHz，推理速度与ZedBoard相比减半。
+  
+  图片显示将使用HDMI显示，后面会使用液晶屏显示。
