@@ -35,7 +35,9 @@
            DNNDK3.1(DECENT DNNC DLET)
 
 * Design Flow: 
+
 1.OpenCV --->(Face.jpg) ---> Caffe --->(train_val.prototxt, train.txt, .caffemodel) ---> DNNDK --->(deploy.caffemodel, dpu_MyFaceNet_0.elf) ---> ZedBoard
+
 2.OpenCV --->(Face.jpg) ---> Caffe --->(train_val.prototxt, train.txt, .caffemodel) ---> DNNDK --->(deploy.caffemodel, dpu_Zing2FaceNet_0.elf) ---> Zing2
 
 ## 1.Create your Net
