@@ -93,6 +93,9 @@ def create_net(proto_path,train_list,test_list,batch_size,class_num):
                                         bias_filler=dict(type='xavier'))
     # 18 SoftMaxwithLoss
     net.loss = caffe.layers.SoftmaxWithLoss(net.fc2,net.label)
+    # Train output
+    net.top1_train = caffe.layers.Accuracy(net.fc2,net.label,
+					   include=dict(phase=caffe.TRAIN))
     # Test accuracy
     net.top1 = caffe.layers.Accuracy(net.fc2,
 				     net.label,
@@ -226,5 +229,5 @@ if __name__ == '__main__':
     #write_solver(solver_proto, train_val_proto)
     #create_img_list(prj_root+'data/',train_list,0,75)
     #create_img_list(prj_root+'data/',test_list,75,100)
-    creat_deploy(deploy_proto)
-    #train_net(solver_proto)
+    #creat_deploy(deploy_proto)
+    train_net(solver_proto)

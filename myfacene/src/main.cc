@@ -74,7 +74,7 @@ using namespace cv;
 /* 7.71 GOP MAdds for ResNet50 */
 #define RESNET50_WORKLOAD (0.15849f)
 /* DPU Kernel name for ResNet50 */
-#define KRENEL_RESNET50 "MyFaceNet_0"
+#define KRENEL_RESNET50 "Zing2FaceNet_0"
 /* Input Node for Kernel ResNet50 */
 #define INPUT_NODE      "conv1"
 /* Output Node for Kernel ResNet50 */

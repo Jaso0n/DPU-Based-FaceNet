@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-net="MyFaceNet"
+net="Zing2FaceNet"
 CPU_ARCH="arm32"
 DNNC_MODE="debug"
-dnndk_board="ZedBoard"
-dnndk_dcf="../dcf/ZedBoard.dcf"
+dnndk_board="zing2"
+dnndk_dcf="../dcf/zing2.dcf"
 
 echo "Compiling Network ${net}"
 

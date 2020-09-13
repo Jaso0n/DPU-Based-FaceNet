@@ -3,7 +3,7 @@ layer {
   type: "Input"
   top: "data"
   transform_param {
-    scale: 0.0039215689
+    scale: 0.003921568859368563
   }
   input_param {
     shape {

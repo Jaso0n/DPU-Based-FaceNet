@@ -204,7 +204,7 @@ layer {
   bottom: "fc1"
   top: "fc2"
   inner_product_param {
-    num_output: 100
+    num_output: 3
     weight_filler {
       type: "xavier"
     }
@@ -227,6 +227,16 @@ layer {
   bottom: "label"
   top: "top1"
   include {
+    phase: TRAIN
+  }
+}
+layer {
+  name: "top1"
+  type: "Accuracy"
+  bottom: "fc2"
+  bottom: "label"
+  top: "top1"
+  include {
     phase: TEST
   }
 }
@@ -240,6 +250,6 @@ layer {
     phase: TEST
   }
   accuracy_param {
-    top_k: 5
+    top_k: 2
   }
 }

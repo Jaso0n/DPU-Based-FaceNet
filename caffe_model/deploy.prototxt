@@ -1,8 +1,19 @@
-input:"data"
-input_dim:1
-input_dim:1
-input_dim:64
-input_dim:64
+layer {
+  name: "InputData"
+  type: "Input"
+  top: "data"
+  transform_param {
+    scale: 0.0039215689
+  }
+  input_param {
+    shape {
+      dim: 1
+      dim: 1
+      dim: 64
+      dim: 64
+    }
+  }
+}
 layer {
   name: "conv1"
   type: "Convolution"
@@ -141,7 +152,7 @@ layer {
   bottom: "fc1"
   top: "fc2"
   inner_product_param {
-    num_output: 100
+    num_output: 3
   }
 }
 layer {
