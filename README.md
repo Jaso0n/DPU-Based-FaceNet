@@ -1,6 +1,7 @@
 # DPU-Based-FaceNet
 ## 0.Tool Chain and Environment
 * Zing2:
+            
             CPU: ARM CortexA9
             
             RAM: 512MB
